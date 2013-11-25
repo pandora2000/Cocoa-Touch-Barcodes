@@ -20,7 +20,10 @@
     self = [super initWithContent:inContent printsCaption:inPrints];
     if (self)
     {
+        float barWidth = imageWidth / [[self completeBarcode] length];
+
         [self setCodeSet:[self _bestCodeSetForContent]];
+	[self setBarWidth:barWidth];
         [self generateChecksum];
         [self calculateWidth];
     }
@@ -131,7 +134,7 @@
 {
     int 	useSet = codeSet;	// Specifies the code on a per-character basis;
     NSString 	*prefix;
-    
+
     // *** We currently only switch from A to B and vice versa
     if (![self _canEncodeChar:inChar withSet:codeSet])
     {
@@ -155,7 +158,7 @@
 {
     // SET_A and SET_B have a lot of characters in common, SET_C uses a
     // separate encoding method.
-	
+
 	if(inSet == SET_B) {
 		switch (inChar) {
 			case ' ':
@@ -600,7 +603,7 @@
 				return (inSet == SET_A) ? @"10100011110" : @"";
 		}
 	}
-	
+
 	return @"";
 }
 // -----------------------------------------------------------------------------------
@@ -612,10 +615,10 @@
                 numLowerCase = 0,
                 i;
     char 	*code = (char *)[[self content] cStringUsingEncoding:NSStringEncodingConversionAllowLossy];
-    
+
     for (i=0; i < strlen(code); i++)
     {
-        
+
         if ((code[i] >= '0') && (code[i] <= '9'))
             numNumbers++;
         else if ((code[i] < 32) || (code[i] == 127))
@@ -870,7 +873,7 @@
     NSMutableString 	*theReturn = [NSMutableString stringWithString:@""];
     char *	code = (char *)[[self content] cStringUsingEncoding:NSStringEncodingConversionAllowLossy];
     int		i;
-    
+
     if (codeSet == SET_C)
     {
         // Left-pad with zero if odd number of characters

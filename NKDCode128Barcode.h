@@ -69,6 +69,14 @@ typedef int CodeSet;
        printsCaption: (BOOL)inPrints;
 
 /*!
+ @method initWithContent:printsCaption:
+ @abstract Overridden to enforce generation of check digit.
+ */
+-(id)initWithContent: (NSString *)inContent
+       printsCaption: (BOOL)inPrints
+          imageWidth: (float)imageWidth;
+
+/*!
  @method codeSet
  @abstract Returns the primary code set being used to encode content
  @result SET_A, SET_B, or SET_C
